@@ -6,6 +6,7 @@ import fgourl
 import user
 import coloredlogs
 import logging
+import mytime
 
 # Enviroments Variables
 userIds = os.environ['userIds'].split(',')
@@ -49,6 +50,7 @@ def main():
             try:
                 instance = user.user(userIds[i], authKeys[i], secretKeys[i])
                 time.sleep(3)
+                logger.info(mytime.GetTimeStamp())
                 logger.info('Loggin into account!')
                 instance.topLogin()
                 time.sleep(2)
