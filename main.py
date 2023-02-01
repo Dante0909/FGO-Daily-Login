@@ -57,7 +57,7 @@ def main():
                 instance.topHome()
                 time.sleep(2)
                 hour = datetime.datetime.utcnow().time().hour
-                if(hour === 10)
+                if hour == 10
                     logger.info('Throw daily friend summon!')
                     instance.drawFP()
                     time.sleep(2)
