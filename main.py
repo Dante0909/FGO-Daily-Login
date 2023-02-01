@@ -61,7 +61,7 @@ def main():
                     logger.info('Throw daily friend summon!')
                     instance.drawFP()
                     time.sleep(2)
-               else
+               else:
                     logger.info('Not throwing daily friend summon')
             except Exception as ex:
                 logger.error(ex)
