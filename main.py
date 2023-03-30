@@ -62,8 +62,8 @@ def main():
             if(lastActualLogin != lastBotLogin):
 
                 timeDiff = datetime.datetime.now() - datetime.datetime.fromtimestamp(lastActualLogin)
-                if(timeDiff.seconds < 18000):
-                    logger.info("Last login by player is less than 5 hours ago, exiting")
+                if(timeDiff.seconds < 14400):
+                    logger.info("Last login by player is less than 4 hours ago, exiting")
                     return
                 
             mainAccount = user.user(userIds[1], authKeys[1], secretKeys[1])
@@ -76,7 +76,7 @@ def main():
             mainAccount.topHome()
             hour = datetime.datetime.utcnow().time().hour
             if hour == 9:
-                logger.info('Throw daily friend summon!')
+                logger.info('Throwing daily friend summon')
                 mainAccount.drawFP()
                 time.sleep(2)
             else:
