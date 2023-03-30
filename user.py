@@ -245,10 +245,10 @@ class user:
         self.Post(f'{fgourl.server_addr_}/home/top?_userId={self.user_id_}')
 
     def checkFriends(self):
-        data = self.Post(f'{fgourl.server_addr_}/friend/top?_userId={self.user_id_}')
-        response = data['response']
-        if(response[0]['resCode'] != "00"):
+        data = self.Post(f'{fgourl.server_addr_}/friend/top?_userId={self.user_id_}')              
+        if(data['response'][0]['resCode'] != "00"):
             return 0
-        eventUserSvtLeaderHash = response['cache']['updated']['otherUserGame'][0]['eventUserSvtLeaderHash'][0]
+        
+        eventUserSvtLeaderHash = data['cache']['updated']['otherUserGame'][0]['eventUserSvtLeaderHash'][0]
         lastLogin = eventUserSvtLeaderHash['updatedAt']
         return lastLogin

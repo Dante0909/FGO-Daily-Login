@@ -9,6 +9,8 @@ import logging
 import mytime
 import datetime
 
+from dotenv import load_dotenv
+load_dotenv()
 # Enviroments Variables
 userIds = os.environ['userIds'].split(',')
 authKeys = os.environ['authKeys'].split(',')
@@ -57,13 +59,13 @@ def main():
             time.sleep(2)
             lastActualLogin = secondAccount.checkFriends()
             time.sleep(2)
-            lastBotLogin = requests.get("https://dante.square.ovh/lastlogin")
+            lastBotLogin = int(requests.get("https://dante.square.ovh/lastlogin").content)
 
             if(lastActualLogin != lastBotLogin):
 
                 timeDiff = datetime.datetime.now() - datetime.datetime.fromtimestamp(lastActualLogin)
                 if(timeDiff.seconds < 18000):
-                    logger.info("Last login by played is less than 5 hours ago, exiting")
+                    logger.info("Last login by player is less than 5 hours ago, exiting")
                     return
                 
             mainAccount = user.user(userIds[1], authKeys[1], secretKeys[1])
@@ -71,7 +73,7 @@ def main():
             logger.info("Logging into main account")
             newLastLogin = mainAccount.topLogin()
             time.sleep(2)
-            requests.get('https://dante.square.ovh/lastlogin/' + newLastLogin)
+            requests.get('https://dante.square.ovh/lastlogin/' + str(newLastLogin))
             time.sleep(2)
             mainAccount.topHome()
             hour = datetime.datetime.utcnow().time().hour
