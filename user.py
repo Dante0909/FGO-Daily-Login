@@ -186,6 +186,7 @@ class user:
             DataWebhook.append("No Bonus")
 
         webhook.topLogin(DataWebhook)
+        return data['cache']['serverTime']
 
     def drawFP(self):
         self.builder_.AddParameter('storyAdjustIds', '[]')
@@ -242,3 +243,12 @@ class user:
 
     def topHome(self):
         self.Post(f'{fgourl.server_addr_}/home/top?_userId={self.user_id_}')
+
+    def checkFriends(self):
+        data = self.Post(f'{fgourl.server_addr_}/friend/top?_userId={self.user_id_}')
+        response = data['response']
+        if(response[0]['resCode'] != "00"):
+            return 0
+        eventUserSvtLeaderHash = response['cache']['updated']['otherUserGame'][0]['eventUserSvtLeaderHash'][0]
+        lastLogin = eventUserSvtLeaderHash['updatedAt']
+        return lastLogin

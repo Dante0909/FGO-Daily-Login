@@ -47,25 +47,43 @@ def main():
         logger.info('Getting Lastest Assets Info')
         fgourl.set_latest_assets()
 
-        for i in range(userNums):
-            try:
-                instance = user.user(userIds[i], authKeys[i], secretKeys[i])
-                time.sleep(3)
-                logger.info('Loggin into account!')
-                instance.topLogin()
-                time.sleep(2)
-                instance.topHome()
-                time.sleep(2)
-                hour = datetime.datetime.utcnow().time().hour
-                if hour == 9:
-                    logger.info('Throw daily friend summon!')
-                    instance.drawFP()
-                    time.sleep(2)
-                else:
-                    logger.info('Not throwing daily friend summon')
-            except Exception as ex:
-                logger.error(ex)
+        try:
+            secondAccount = user.user(userIds[0], authKeys[0], secretKeys[0])
+            time.sleep(3)
+            logger.info('Logging into bot')
+            secondAccount.topLogin()
+            time.sleep(2)
+            secondAccount.topHome()
+            time.sleep(2)
+            lastActualLogin = secondAccount.checkFriends()
+            time.sleep(2)
+            lastBotLogin = requests.get("https://dante.square.ovh/lastlogin")
 
+            if(lastActualLogin != lastBotLogin):
+
+                timeDiff = datetime.datetime.now() - datetime.datetime.fromtimestamp(lastActualLogin)
+                if(timeDiff.seconds < 18000):
+                    logger.info("Last login by played is less than 5 hours ago, exiting")
+                    return
+                
+            mainAccount = user.user(userIds[1], authKeys[1], secretKeys[1])
+            time.sleep(3)
+            logger.info("Logging into main account")
+            newLastLogin = mainAccount.topLogin()
+            time.sleep(2)
+            requests.get('https://dante.square.ovh/lastlogin/' + newLastLogin)
+            time.sleep(2)
+            mainAccount.topHome()
+            hour = datetime.datetime.utcnow().time().hour
+            if hour == 9:
+                logger.info('Throw daily friend summon!')
+                mainAccount.drawFP()
+                time.sleep(2)
+            else:
+                logger.info('Not throwing daily friend summon')
+
+        except Exception as ex:
+            logger.error(ex)
 
 if __name__ == "__main__":
     main()
