@@ -9,8 +9,6 @@ import logging
 import mytime
 import datetime
 
-from dotenv import load_dotenv
-load_dotenv()
 # Enviroments Variables
 userIds = os.environ['userIds'].split(',')
 authKeys = os.environ['authKeys'].split(',')
